@@ -13,9 +13,13 @@
     "author": {
         "name": "Govorov Aleksandr",
         "email": "govorovaleksandrdev@gmail.com",
-        "url": "https://github.com/GovorovAleksandr/SingleLeo"
+        "url": "https://github.com/GovorovAleksandr"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/GovorovAleksandr/SingleLeo.git"
     },
     "dependencies": {
-        "com.leopotam.ecs": "1.0.0"
+        "com.leopotam.ecs": "https://github.com/Leopotam/ecs.git"
     }
 }
