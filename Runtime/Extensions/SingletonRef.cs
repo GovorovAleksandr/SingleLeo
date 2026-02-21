@@ -1,6 +1,6 @@
 using Leopotam.Ecs;
 
-namespace LeoECS.Singletons
+namespace GovorovAleksandr.SingleLeo
 {
     public readonly struct SingletonRef<T> where T : struct
     {

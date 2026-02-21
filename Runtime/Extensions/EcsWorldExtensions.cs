@@ -1,7 +1,7 @@
 using System;
 using Leopotam.Ecs;
 
-namespace LeoECS.Singletons
+namespace GovorovAleksandr.SingleLeo
 {
     public static class EcsWorldExtensions
     {
