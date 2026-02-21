@@ -4,27 +4,43 @@ namespace GovorovAleksandr.SingleLeo
 {
     public static class EcsWorldComponentMutationExtensions
     {
-        public static bool TryAddSingleton<T>(this EcsWorld world, T component, out EcsSingleton<T> ecsSingleton) where T : struct
+        public static bool TryAddSingleton<T>(this EcsWorld world, T component, out EcsSingleton<T> singleton) where T : struct
         {
-            if (world.HasAtLeastOneSingleton<T>()) { ecsSingleton = default; return false; }
+            if (!world.TryAddSingleton(out singleton)) return false;
             
-            var entity = world.NewEntity();
-            entity.Get<T>() = component;
-            ecsSingleton = new(entity, entity.Ref<T>());
+            singleton.ComponentRef.Unref() = component;
             
             return true;
         }
-        
+
+        public static bool TryAddSingleton<T>(this EcsWorld world, out EcsSingleton<T> singleton) where T : struct
+        {
+            if (world.HasAtLeastOneSingleton<T>()) { singleton = default; return false; }
+            
+            var entity = world.NewEntity();
+            entity.Get<T>();
+            singleton = new(entity, entity.Ref<T>());
+            
+            return true;
+        }
+
         public static EcsSingleton<T> AddSingleton<T>(this EcsWorld world, T component) where T : struct
+        {
+            var singleton = world.AddSingleton<T>();
+            singleton.ComponentRef.Unref() = component;
+            return singleton;
+        }
+
+        public static EcsSingleton<T> AddSingleton<T>(this EcsWorld world) where T : struct
         {
             var filter = world.GetFilter(typeof(EcsFilter<T>));
             SingletonInvariantValidator.ValidateDoesNotExist<T>(filter);
             
             var entity = world.NewEntity();
-            entity.Get<T>() = component;
+            entity.Get<T>();
             return new(entity, entity.Ref<T>());
         }
-        
+
         public static bool TryRemoveSingleton<T>(this EcsWorld world) where T : struct
         {
             if (!world.HasAtLeastOneSingleton<T>()) return false;
