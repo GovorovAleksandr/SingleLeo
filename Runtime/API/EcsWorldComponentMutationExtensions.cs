@@ -17,7 +17,7 @@ namespace GovorovAleksandr.SingleLeo
         
         public static EcsSingleton<T> AddSingleton<T>(this EcsWorld world, T component) where T : struct
         {
-            var filter = world.GetFilter(typeof(T));
+            var filter = world.GetFilter(typeof(EcsFilter<T>));
             SingletonInvariantValidator.ValidateDoesNotExist<T>(filter);
             
             var entity = world.NewEntity();

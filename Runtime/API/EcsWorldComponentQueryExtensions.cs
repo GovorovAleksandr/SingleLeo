@@ -6,17 +6,17 @@ namespace GovorovAleksandr.SingleLeo
     {
         public static bool HasUniqueSingleton<T>(this EcsWorld world) where T : struct
         {
-            return SingletonCountValidator.HasUniqueSingleton(world.GetFilter(typeof(T)));
+            return SingletonCountValidator.HasUniqueSingleton(world.GetFilter(typeof(EcsFilter<T>)));
         }
 
         public static bool HasAtLeastOneSingleton<T>(this EcsWorld world) where T : struct
         {
-            return SingletonCountValidator.HasAtLeastOneSingleton(world.GetFilter(typeof(T)));
+            return SingletonCountValidator.HasAtLeastOneSingleton(world.GetFilter(typeof(EcsFilter<T>)));
         }
 
         public static bool HasMoreThanOneSingleton<T>(this EcsWorld world) where T : struct
         {
-            return SingletonCountValidator.HasMoreThanOneSingleton(world.GetFilter(typeof(T)));
+            return SingletonCountValidator.HasMoreThanOneSingleton(world.GetFilter(typeof(EcsFilter<T>)));
         }
 
         public static bool TryGetSingleton<T>(this EcsWorld world, out EcsSingleton<T> singleton) where T : struct
@@ -30,7 +30,7 @@ namespace GovorovAleksandr.SingleLeo
 
         public static EcsSingleton<T> GetSingleton<T>(this EcsWorld world) where T : struct
         {
-            var filter = world.GetFilter(typeof(T));
+            var filter = world.GetFilter(typeof(EcsFilter<T>));
 
             SingletonInvariantValidator.ValidateUniqueSingleton<T>(filter);
 
