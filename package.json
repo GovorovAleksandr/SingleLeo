@@ -1,0 +1,21 @@
+{
+    "name": "com.govorovaleksandr.singleleo",
+    "displayName": "LeoECS Singletons",
+    "version": "1.0.0",
+    "unity": "2020.3",
+    "description": "Utilities for working with singleton components in LeoECS.",
+    "keywords": [
+        "leoecs",
+        "ecs",
+        "singletons",
+        "unity"
+    ],
+    "author": {
+        "name": "Govorov Aleksandr",
+        "email": "govorovaleksandrdev@gmail.com",
+        "url": "https://github.com/GovorovAleksandr/SingleLeo"
+    },
+    "dependencies": {
+        "com.leopotam.ecs": "1.0.0"
+    }
+}
