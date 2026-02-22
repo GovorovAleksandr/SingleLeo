@@ -4,28 +4,28 @@ namespace GovorovAleksandr.SingleLeo
 {
     internal static class SingletonInvariantValidator
     {
-        public static void ValidateUniqueSingleton<T>(EcsFilter filter) where T : struct
+        public static void ValidateUniqueSingleton(EcsFilter filter)
         {
-            ValidateExists<T>(filter);
-            ValidateNotMultiple<T>(filter);
+            ValidateExists(filter);
+            ValidateNotMultiple(filter);
         }
 
-        public static void ValidateExists<T>(EcsFilter filter) where T : struct
+        public static void ValidateExists(EcsFilter filter)
         {
             if (SingletonCountValidator.HasAtLeastOneSingleton(filter)) return;
-            throw new SingletonInvariantException($"Entity singleton {typeof(T).Name} not found");
+            throw new SingletonInvariantException($"Entity singleton {filter.GetDescription()} not found");
         }
 
-        public static void ValidateDoesNotExist<T>(EcsFilter filter) where T : struct
+        public static void ValidateDoesNotExist(EcsFilter filter)
         {
             if (!SingletonCountValidator.HasAtLeastOneSingleton(filter)) return;
-            throw new SingletonInvariantException($"Entity singleton {typeof(T).Name} already exists");
+            throw new SingletonInvariantException($"Entity singleton with filter: {filter.GetDescription()} already exists");
         }
 
-        public static void ValidateNotMultiple<T>(EcsFilter filter) where T : struct
+        public static void ValidateNotMultiple(EcsFilter filter)
         {
             if (!SingletonCountValidator.HasMoreThanOneSingleton(filter)) return;
-            throw new SingletonInvariantException($"Multiple {typeof(T).Name} Entity singletons found");
+            throw new SingletonInvariantException($"Multiple {filter.GetDescription()} Entity singletons found");
         }
     }
 }

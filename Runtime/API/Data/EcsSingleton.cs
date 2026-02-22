@@ -5,14 +5,15 @@ namespace GovorovAleksandr.SingleLeo
     public readonly struct EcsSingleton<T> where T : struct
     {
         public readonly EcsEntity Entity;
-        public readonly EcsComponentRef<T> ComponentRef;
+        public readonly EcsComponentRef<T> ComponentRW;
 
-        internal EcsSingleton(EcsEntity entity, EcsComponentRef<T> componentRef)
+        internal EcsSingleton(EcsEntity entity, EcsComponentRef<T> componentRW)
         {
             Entity = entity;
-            ComponentRef = componentRef;
+            ComponentRW = componentRW;
         }
-        
+
         public bool IsAlive => Entity.IsAlive();
+        public T ComponentRO => ComponentRW.Unref();
     }
 }
