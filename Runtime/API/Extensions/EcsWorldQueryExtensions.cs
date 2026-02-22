@@ -19,35 +19,21 @@ namespace GovorovAleksandr.SingleLeo
             return SingletonCountValidator.HasMoreThanOneSingleton(world.GetFilter(typeof(TFilter)));
         }
 
-        public static bool TryGetSingleton<TTarget>(this EcsWorld world, out EcsSingleton<TTarget> singleton) where TTarget : struct
-        {
-            return world.TryGetSingleton<TTarget, EcsFilter<TTarget>>(out singleton);
-        }
-
-        public static bool TryGetSingleton<TTarget, TFilter>(this EcsWorld world, out EcsSingleton<TTarget> singleton)
-            where TTarget : struct
-            where TFilter : EcsFilter
+        public static bool TryGetSingleton<TFilter>(this EcsWorld world, out EcsSingleton singleton) where TFilter : EcsFilter
         {
             if (!world.HasAtLeastOneSingleton<TFilter>()) { singleton = default; return false; }
-            singleton = world.GetSingleton<TTarget, TFilter>();
+            singleton = world.GetSingleton<TFilter>();
             return true;
         }
-
-        public static EcsSingleton<TTarget> GetSingleton<TTarget>(this EcsWorld world) where TTarget : struct
-        {
-            return world.GetSingleton<TTarget, EcsFilter<TTarget>>();
-        }
         
-        public static EcsSingleton<TTarget> GetSingleton<TTarget, TFilter>(this EcsWorld world)
-            where TTarget : struct
-            where TFilter : EcsFilter
+        public static EcsSingleton GetSingleton<TFilter>(this EcsWorld world) where TFilter : EcsFilter
         {
             var filter = world.GetFilter(typeof(TFilter));
 
             SingletonInvariantValidator.ValidateUniqueSingleton(filter);
 
             var entity = filter.GetEntity(0);
-            return new (entity, entity.Ref<TTarget>());
+            return new (entity);
         }
     }
 }
