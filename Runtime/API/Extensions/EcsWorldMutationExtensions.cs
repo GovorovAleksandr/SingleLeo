@@ -4,42 +4,30 @@ namespace GovorovAleksandr.SingleLeo
 {
     public static class EcsWorldMutationExtensions
     {
-        public static bool TryAddSingleton<T, TFilter>(this EcsWorld world, T component, out EcsSingleton<T> singleton)
-            where T : struct
-            where TFilter : EcsFilter
+        public static bool TryAddSingleton<T>(this EcsWorld world, T component, out EcsSingleton<T> singleton) where T : struct
         {
-            if (!world.TryAddSingleton<T, TFilter>(out singleton)) return false;
+            if (!world.TryAddSingleton(out singleton)) return false;
             singleton.ComponentRW.Unref() = component;
             return true;
         }
 
-        public static bool TryAddSingleton<T, TFilter>(this EcsWorld world, out EcsSingleton<T> singleton)
-            where T : struct
-            where TFilter : EcsFilter
+        public static bool TryAddSingleton<T>(this EcsWorld world, out EcsSingleton<T> singleton) where T : struct
         {
-            if (world.HasAtLeastOneSingleton<TFilter>()) { singleton = default; return false; }
-            
-            var entity = world.NewEntity();
-            entity.Get<T>();
-            singleton = new(entity, entity.Ref<T>());
-            
+            if (world.HasAtLeastOneSingleton<EcsFilter<T>>()) { singleton = default; return false; }
+            singleton = world.AddSingleton<T>();
             return true;
         }
 
-        public static EcsSingleton<T> AddSingleton<T, TFilter>(this EcsWorld world, T component)
-            where T : struct
-            where TFilter : EcsFilter
+        public static EcsSingleton<T> AddSingleton<T>(this EcsWorld world, T component) where T : struct
         {
-            var singleton = world.AddSingleton<T, TFilter>();
+            var singleton = world.AddSingleton<T>();
             singleton.ComponentRW.Unref() = component;
             return singleton;
         }
 
-        public static EcsSingleton<T> AddSingleton<T, TFilter>(this EcsWorld world)
-            where T : struct
-            where TFilter : EcsFilter
+        public static EcsSingleton<T> AddSingleton<T>(this EcsWorld world) where T : struct
         {
-            var filter = world.GetFilter(typeof(TFilter));
+            var filter = world.GetFilter(typeof(EcsFilter<T>));
             SingletonInvariantValidator.ValidateDoesNotExist(filter);
             
             var entity = world.NewEntity();
@@ -61,32 +49,6 @@ namespace GovorovAleksandr.SingleLeo
             where TFilter : EcsFilter
         {
             world.GetSingleton<T, TFilter>().Entity.Destroy();
-        }
-
-        public static EcsSingleton<T> ReplaceOrAddSingleton<T, TFilter>(this EcsWorld world, T component)
-            where T : struct
-            where TFilter : EcsFilter
-        {
-            if (world.HasAtLeastOneSingleton<TFilter>()) return world.ReplaceSingleton<T, TFilter>(component);
-            return world.AddSingleton<T, TFilter>(component);
-        }
-
-        public static bool TryReplaceSingleton<T, TFilter>(this EcsWorld world, T component, out EcsSingleton<T> singleton)
-            where T : struct
-            where TFilter : EcsFilter
-        {
-            if (!world.TryGetSingleton<T, TFilter>(out singleton)) { singleton = default; return false; }
-            singleton.Entity.Get<T>() = component;
-            return true;
-        }
-        
-        public static EcsSingleton<T> ReplaceSingleton<T, TFilter>(this EcsWorld world, T component)
-            where T : struct
-            where TFilter : EcsFilter
-        {
-            var singleton = world.GetSingleton<T, TFilter>();
-            singleton.Entity.Get<T>() = component;
-            return singleton;
         }
     }
 }
