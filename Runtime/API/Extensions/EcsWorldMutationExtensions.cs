@@ -4,6 +4,7 @@ namespace GovorovAleksandr.SingleLeo
 {
     public static class EcsWorldMutationExtensions
     {
+        public static bool TryAddSingleton<T>(this EcsWorld world, T component) where T : struct => world.TryAddSingleton(component, out _);
         public static bool TryAddSingleton<T>(this EcsWorld world, T component, out EcsSingleton singleton) where T : struct
         {
             if (!world.TryAddSingleton<T>(out singleton)) return false;
@@ -11,6 +12,7 @@ namespace GovorovAleksandr.SingleLeo
             return true;
         }
 
+        public static bool TryAddSingleton<T>(this EcsWorld world) where T : struct => world.TryAddSingleton<T>(out _);
         public static bool TryAddSingleton<T>(this EcsWorld world, out EcsSingleton singleton) where T : struct
         {
             if (world.HasAtLeastOneSingleton<EcsFilter<T>>()) { singleton = default; return false; }

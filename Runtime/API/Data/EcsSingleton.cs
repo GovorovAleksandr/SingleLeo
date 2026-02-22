@@ -41,11 +41,23 @@ namespace GovorovAleksandr.SingleLeo
             return _entity.Ref<T>();
         }
         
+        public bool TryAdd<T>(T component, out EcsSingleton singleton) where T : struct
+        {
+            singleton = this;
+            return TryAdd(component);
+        }
+        
         public bool TryAdd<T>(T component) where T : struct
         {
             if (Has<T>()) return false;
             _entity.Get<T>() = component;
             return true;
+        }
+
+        public bool TryAdd<T>(out EcsSingleton singleton) where T : struct
+        {
+            singleton = this;
+            return TryAdd<T>();
         }
 
         public bool TryAdd<T>() where T : struct
@@ -55,16 +67,18 @@ namespace GovorovAleksandr.SingleLeo
             return true;
         }
         
-        public void Add<T>(T component) where T : struct
+        public EcsSingleton Add<T>(T component) where T : struct
         {
             if (Has<T>()) ThrowComponentAlreadyExists<T>();
             _entity.Get<T>() = component;
+            return this;
         }
 
-        public void Add<T>() where T : struct
+        public EcsSingleton Add<T>() where T : struct
         {
             if (Has<T>()) ThrowComponentAlreadyExists<T>();
             _entity.Get<T>();
+            return this;
         }
 
         public void Destroy() => _entity.Destroy();
