@@ -83,7 +83,7 @@ namespace GovorovAleksandr.SingleLeo
 
         public void Destroy() => _entity.Destroy();
 
-        private static void ThrowComponentNotExists<T>() where T : struct => throw new SingletonInvariantException($"Component {typeof(T)} does not exists");
-        private static void ThrowComponentAlreadyExists<T>() where T : struct => throw new SingletonInvariantException($"Component {typeof(T)} already exists");
+        private static void ThrowComponentNotExists<T>() where T : struct => throw new SingletonInvariantException($"Component {typeof(T).Name} does not exist");
+        private static void ThrowComponentAlreadyExists<T>() where T : struct => throw new SingletonInvariantException($"Component {typeof(T).Name} already exists");
     }
 }
