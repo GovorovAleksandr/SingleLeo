@@ -19,6 +19,11 @@ namespace GovorovAleksandr.SingleLeo
             return SingletonCountValidator.HasMoreThanOneSingleton(world.GetFilter(typeof(TFilter)));
         }
 
+        public static bool TryGetSingleton<TTarget>(this EcsWorld world, out EcsSingleton<TTarget> singleton) where TTarget : struct
+        {
+            return world.TryGetSingleton<TTarget, EcsFilter<TTarget>>(out singleton);
+        }
+
         public static bool TryGetSingleton<TTarget, TFilter>(this EcsWorld world, out EcsSingleton<TTarget> singleton)
             where TTarget : struct
             where TFilter : EcsFilter
@@ -28,6 +33,11 @@ namespace GovorovAleksandr.SingleLeo
             return true;
         }
 
+        public static EcsSingleton<TTarget> GetSingleton<TTarget>(this EcsWorld world) where TTarget : struct
+        {
+            return world.GetSingleton<TTarget, EcsFilter<TTarget>>();
+        }
+        
         public static EcsSingleton<TTarget> GetSingleton<TTarget, TFilter>(this EcsWorld world)
             where TTarget : struct
             where TFilter : EcsFilter
