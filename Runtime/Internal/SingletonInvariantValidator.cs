@@ -30,20 +30,26 @@ namespace GovorovAleksandr.SingleLeo
         
         public static string GetDescription(EcsFilter filter)
         {
-            var includedTypes = "";
-            for (var i = 0; i < filter.IncludedTypes.Length; i++)
+            var includedTypes = "none";
+            if (filter.IncludedTypes != null && filter.IncludedTypes.Length > 0)
             {
-                var type = filter.IncludedTypes[i];
-                var separator = i == filter.IncludedTypes.Length - 1 ? "" : ", ";
-                includedTypes += $"{type.Name}{separator}";
+                for (var i = 0; i < filter.IncludedTypes.Length; i++)
+                {
+                    var type = filter.IncludedTypes[i];
+                    var separator = i == filter.IncludedTypes.Length - 1 ? "" : ", ";
+                    includedTypes += $"{type.Name}{separator}";
+                }
             }
             
-            var excludedTypes = "";
-            for (var i = 0; i < filter.ExcludedTypes.Length; i++)
+            var excludedTypes = "none";
+            if (filter.ExcludedTypes != null && filter.ExcludedTypes.Length > 0)
             {
-                var type = filter.ExcludedTypes[i];
-                var separator = i == filter.ExcludedTypes.Length - 1 ? "" : ", ";
-                excludedTypes += $"{type.Name}{separator}";
+                for (var i = 0; i < filter.ExcludedTypes.Length; i++)
+                {
+                    var type = filter.ExcludedTypes[i];
+                    var separator = i == filter.ExcludedTypes.Length - 1 ? "" : ", ";
+                    excludedTypes += $"{type.Name}{separator}";
+                }
             }
             
             return $"[Included types: {includedTypes}] [Excluded types: {excludedTypes}]";
